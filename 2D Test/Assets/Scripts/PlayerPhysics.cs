@@ -128,4 +128,8 @@ public class PlayerPhysics : MonoBehaviour {
 		c = centre * colliderScale;
 	}
 	
+	public void ResetCollider() {
+		SetCollider(originalSize,originalCentre);	
+	}
+	
 }
