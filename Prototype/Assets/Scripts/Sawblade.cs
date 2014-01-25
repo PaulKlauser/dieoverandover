@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Sawblade : MonoBehaviour {
+public class Sawblade : Obstacle {
 	
 	public float speed = 300;
 
@@ -11,6 +11,7 @@ public class Sawblade : MonoBehaviour {
 	
 	
 	void OnTriggerEnter(Collider c) {
+		ShowTrueColor ();
 		if (c.tag == "Player") {
 			c.GetComponent<Entity>().TakeDamage(10);
 		}

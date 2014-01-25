@@ -70,10 +70,15 @@ public class PlayerPhysics : MonoBehaviour {
 			Debug.DrawRay(ray.origin,ray.direction);
 			
 			if (Physics.Raycast(ray,out hit,Mathf.Abs(deltaY) + skin,collisionMask)) {
-
 				platform = hit.transform;
 				platformPositionOld = platform.position;
-
+				
+				Obstacle obs = platform.GetComponent<Obstacle>();
+				if(obs)
+				{
+					obs.ShowTrueColor();
+				}
+				
 				// Get Distance between player and ground
 				float dst = Vector3.Distance (ray.origin, hit.point);
 				
@@ -111,6 +116,12 @@ public class PlayerPhysics : MonoBehaviour {
 				
 				if (Physics.Raycast(ray,out hit,Mathf.Abs(deltaX) + skin,collisionMask)) {
 					
+					Obstacle obs = hit.transform.GetComponent<Obstacle>();
+					if(obs)
+					{
+						obs.ShowTrueColor();
+					}
+
 					if (hit.collider.tag == "Wall Jump") {
 						
 						if (Mathf.Sign(deltaX) == Mathf.Sign(moveDirX) && moveDirX != 0) {
