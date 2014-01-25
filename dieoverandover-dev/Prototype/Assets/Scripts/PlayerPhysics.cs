@@ -177,5 +177,10 @@ public class PlayerPhysics : MonoBehaviour {
 	public void ResetCollider() {
 		SetCollider(originalSize,originalCentre);	
 	}
-	
+
+	public void standUp(){
+		Vector3 standupOffset = new Vector3(0, originalSize.y * colliderScale - s.y - c.y - 0.15f, 0);
+		transform.Translate(standupOffset);
+		ResetCollider ();
+	}
 }

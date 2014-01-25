@@ -70,7 +70,8 @@ public class PlayerController : Entity {
 					stopSliding = false;
 					sliding = false;
 					animator.SetBool("Sliding",false);
-					playerPhysics.ResetCollider();
+					//playerPhysics.ResetCollider();
+					playerPhysics.standUp();
 				}
 			}
 			
@@ -81,7 +82,7 @@ public class PlayerController : Entity {
 					animator.SetBool("Sliding",true);
 					targetSpeed = 0;
 					
-					playerPhysics.SetCollider(new Vector3(10.3f,1.5f,3), new Vector3(.35f,.75f,0));
+					playerPhysics.SetCollider(new Vector3(5.46f,3.7f,3), new Vector3(0.0f,0.0f,0));
 				}
 			}
 		}
