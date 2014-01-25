@@ -31,12 +31,13 @@ public class PlayerController : Entity {
 	// Components
 	private PlayerPhysics playerPhysics;
 	private Animator animator;
+	private GameManager manager;
 	
 
 	void Start () {
 		playerPhysics = GetComponent<PlayerPhysics>();
 		animator = GetComponent<Animator>();
-		
+		manager = Camera.main.GetComponent<GameManager>();
 		animator.SetLayerWeight(1,1);
 	}
 	
@@ -144,6 +145,15 @@ public class PlayerController : Entity {
 		amountToMove.y -= gravity * Time.deltaTime;
 		playerPhysics.Move(amountToMove * Time.deltaTime, moveDirX);
 	
+	}
+
+	void OnTriggerEnter(Collider c) {
+		if (c.tag == "Checkpoint") {
+			manager.SetCheckpoint(c.transform.position);
+		}
+		if (c.tag == "Finish") {
+			manager.EndLevel();
+		}
 	}
 	
 	// Increase n towards target by speed
