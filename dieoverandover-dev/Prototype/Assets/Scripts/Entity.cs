@@ -10,6 +10,7 @@ public class Entity : MonoBehaviour {
 	//public ParticleSystem blood;
 	//public GameObject blood;
 	public ParticleSystem bloodParticles;
+	public GameObject deadBody;
 
 	/*void Update() {
 		Blood bloodScript = this.gameObject.GetComponent<Blood> ();
@@ -24,8 +25,8 @@ public class Entity : MonoBehaviour {
 	}
 	
 	public void Die() {
-		Ragdoll r = (Instantiate(ragdoll,transform.position,transform.rotation) as GameObject).GetComponent<Ragdoll>();
-		r.CopyPose(transform);
+		//Ragdoll r = (Instantiate(ragdoll,transform.position,transform.rotation) as GameObject).GetComponent<Ragdoll>();
+		//r.CopyPose(transform);
 		Destroy(this.gameObject);
 		dead = true;
 		//blood = GetComponent<ParticleSystem> ();
@@ -34,8 +35,8 @@ public class Entity : MonoBehaviour {
 		//bloodScript.Bleed ();
 		//GameObject go = (GameObject)Instantiate (Resources.Load ("blood"));
 		//GameObject b = (Instantiate (Resources.Load ("blood"), transform.position, transform.rotation) as GameObject);
-		Instantiate (bloodParticles, transform.position, transform.rotation);
-
+		Instantiate(bloodParticles, transform.position, transform.rotation);
+		//Instantiate(deadBody, transform.position, transform.rotation);
 
 	}
 

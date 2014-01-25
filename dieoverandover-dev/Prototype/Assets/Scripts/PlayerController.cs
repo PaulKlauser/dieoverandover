@@ -7,12 +7,12 @@ public class PlayerController : Entity {
 	// Player Handling
 	public float gravity = 20;
 	public float walkSpeed = 8;
-	public float runSpeed = 12;
+	//public float runSpeed = 12;
 	public float acceleration = 30;
 	public float jumpHeight = 12;
-	public float slideDeceleration = 10;
+	public float slideDeceleration = 8;
 
-	private float initiateSlideThreshold = 9;
+	private float initiateSlideThreshold = 7;
 	
 	// System
 	private float animationSpeed;
@@ -38,7 +38,7 @@ public class PlayerController : Entity {
 		playerPhysics = GetComponent<PlayerPhysics>();
 		animator = GetComponent<Animator>();
 		manager = Camera.main.GetComponent<GameManager>();
-		animator.SetLayerWeight(1,1);
+		//animator.SetLayerWeight(1,1);
 	}
 	
 	void Update () {
@@ -119,13 +119,13 @@ public class PlayerController : Entity {
 		// Input
 		moveDirX = Input.GetAxisRaw("Horizontal");
 		if (!sliding) {
-			float speed = (Input.GetButton("Run"))?runSpeed:walkSpeed;
+			float speed = walkSpeed;
 			targetSpeed = moveDirX * speed;
 			currentSpeed = IncrementTowards(currentSpeed, targetSpeed,acceleration);
 			
 			// Face Direction
 			if (moveDirX !=0 && !wallHolding) {
-				transform.eulerAngles = (moveDirX>0)?Vector3.up * 180:Vector3.zero;
+				transform.eulerAngles = (moveDirX<0)?Vector3.up * 180:Vector3.zero;
 			}
 		}
 		else {
