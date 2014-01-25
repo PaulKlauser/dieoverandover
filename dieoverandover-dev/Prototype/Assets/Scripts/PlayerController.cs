@@ -66,7 +66,7 @@ public class PlayerController : Entity {
 			
 			// Slide logic
 			if (sliding) {
-				if (Mathf.Abs(currentSpeed) < .25f || stopSliding) {
+				if (Mathf.Abs(currentSpeed) < .25f || stopSliding || Input.GetButtonUp("Slide")) {
 					stopSliding = false;
 					sliding = false;
 					animator.SetBool("Sliding",false);
