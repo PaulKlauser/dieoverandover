@@ -24,6 +24,9 @@ public class PlayerPhysics : MonoBehaviour {
 	public bool grounded;
 	[HideInInspector]
 	public bool movementStopped;
+	[HideInInspector]
+	public bool canWallHold;
+	
 	
 	Ray ray;
 	RaycastHit hit;
@@ -37,7 +40,7 @@ public class PlayerPhysics : MonoBehaviour {
 		SetCollider(originalSize,originalCentre);
 	}
 
-	public void Move(Vector2 moveAmount) {
+	public void Move(Vector2 moveAmount, float moveDirX) {
 		
 		float deltaY = moveAmount.y;
 		float deltaX = moveAmount.x;
@@ -76,29 +79,41 @@ public class PlayerPhysics : MonoBehaviour {
 		
 		// Check collisions left and right
 		movementStopped = false;
-		for (int i = 0; i<collisionDivisionsY; i ++) {
-			float dir = Mathf.Sign(deltaX);
-			float x = p.x + c.x + s.x/2 * dir;
-			float y = p.y + c.y - s.y/2 + s.y/3 * i;
-			
-			ray = new Ray(new Vector2(x,y), new Vector2(dir,0));
-			Debug.DrawRay(ray.origin,ray.direction);
-			
-			if (Physics.Raycast(ray,out hit,Mathf.Abs(deltaX) + skin,collisionMask)) {
-				// Get Distance between player and ground
-				float dst = Vector3.Distance (ray.origin, hit.point);
+		canWallHold = false;
+		
+		if (deltaX != 0) {
+			for (int i = 0; i<collisionDivisionsY; i ++) {
+				float dir = Mathf.Sign(deltaX);
+				float x = p.x + c.x + s.x/2 * dir;
+				float y = p.y + c.y - s.y/2 + s.y/(collisionDivisionsY-1) * i;
 				
-				// Stop player's downwards movement after coming within skin width of a collider
-				if (dst > skin) {
-					deltaX = dst * dir - skin * dir;
+				ray = new Ray(new Vector2(x,y), new Vector2(dir,0));
+				Debug.DrawRay(ray.origin,ray.direction);
+				
+				if (Physics.Raycast(ray,out hit,Mathf.Abs(deltaX) + skin,collisionMask)) {
+					
+					if (hit.collider.tag == "Wall Jump") {
+						
+						if (Mathf.Sign(deltaX) == Mathf.Sign(moveDirX) && moveDirX != 0) {
+							canWallHold = true;
+						}
+					}
+					
+					// Get Distance between player and ground
+					float dst = Vector3.Distance (ray.origin, hit.point);
+					
+					// Stop player's downwards movement after coming within skin width of a collider
+					if (dst > skin) {
+						deltaX = dst * dir - skin * dir;
+					}
+					else {
+						deltaX = 0;
+					}
+					
+					movementStopped = true;
+					break;
+					
 				}
-				else {
-					deltaX = 0;
-				}
-				
-				movementStopped = true;
-				break;
-				
 			}
 		}
 		
