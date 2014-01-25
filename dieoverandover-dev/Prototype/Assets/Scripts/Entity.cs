@@ -8,10 +8,12 @@ public class Entity : MonoBehaviour {
 	public bool dead;
 	//public Blood bloodScript;
 	//public ParticleSystem blood;
+	//public GameObject blood;
+	public ParticleSystem bloodParticles;
 
-	void Update() {
+	/*void Update() {
 		Blood bloodScript = this.gameObject.GetComponent<Blood> ();
-		}
+		}*/
 	
 	public void TakeDamage(float dmg) {
 		health -= dmg;
@@ -29,7 +31,11 @@ public class Entity : MonoBehaviour {
 		//blood = GetComponent<ParticleSystem> ();
 		//blood.Play ();
 		//blood = new Blood ();
-		bloodScript.Bleed ();
+		//bloodScript.Bleed ();
+		//GameObject go = (GameObject)Instantiate (Resources.Load ("blood"));
+		//GameObject b = (Instantiate (Resources.Load ("blood"), transform.position, transform.rotation) as GameObject);
+		Instantiate (bloodParticles, transform.position, transform.rotation);
+
 
 	}
 

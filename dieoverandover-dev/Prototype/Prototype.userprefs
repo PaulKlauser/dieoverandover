@@ -1,11 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Entity.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GameCamera.cs">
     <Files>
+      <File FileName="Assets\Scripts\Entity.cs" Line="37" Column="72" />
       <File FileName="Assets\Scripts\Ragdoll.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Sawblade.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Entity.cs" Line="10" Column="4" />
-      <File FileName="Assets\Scripts\Blood.cs" Line="22" Column="5" />
+      <File FileName="Assets\Scripts\Entity.cs" Line="46" Column="1" />
+      <File FileName="Assets\Scripts\Blood.cs" Line="13" Column="4" />
+      <File FileName="Assets\Scripts\Obstacle.cs" Line="9" Column="17" />
+      <File FileName="Assets\Scripts\GameCamera.cs" Line="21" Column="48" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
