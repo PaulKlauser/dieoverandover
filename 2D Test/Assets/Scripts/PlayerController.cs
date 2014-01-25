@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(PlayerPhysics))]
-public class PlayerController : MonoBehaviour {
+public class PlayerController : Entity {
 	
 	// Player Handling
 	public float gravity = 20;
@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour {
 		amountToMove.x = currentSpeed;
 		amountToMove.y -= gravity * Time.deltaTime;
 		playerPhysics.Move(amountToMove * Time.deltaTime);
-
+	
 	}
 	
 	// Increase n towards target by speed
