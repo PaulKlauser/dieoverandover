@@ -16,12 +16,12 @@ public class Sawblade : Obstacle {
 	
 	
 	void OnTriggerEnter(Collider c) {
-		//ShowTrueColor ();
-
-		//renderer.material = bloody;
-		renderer.enabled = true;
 		if (c.tag == "Player") {
 			c.GetComponent<Entity>().TakeDamage(10);
 		}
+	}
+
+	void OnParticleCollision(GameObject particleSystem) {
+		renderer.enabled = true;
 	}
 }
