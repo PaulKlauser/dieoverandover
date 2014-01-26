@@ -15,7 +15,9 @@ public class Spike : Obstacle {
 	}
 	void OnTriggerEnter(Collider c) {
 				if (c.tag == "Player") {
-						c.GetComponent<Entity> ().TakeDamage (10);
+					c.GetComponent<Entity>().bloodParticles.emissionRate = 600;
+					c.GetComponent<Entity>().bloodParticles.startSpeed = 4;
+					c.GetComponent<Entity>().TakeDamage (10);
 				}
 		}
 	void OnParticleCollision(GameObject particleSystem) {
