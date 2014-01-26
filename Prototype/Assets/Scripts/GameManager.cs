@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour {
 	private void Update() {
 		if (!currentPlayer) {
 			if (Input.GetButtonDown("Respawn")) {
+				GameObject body = GameObject.FindGameObjectWithTag("DeadBody");
+				if (body)
+				{
+					Destroy(body);
+				}
 				SpawnPlayer(checkpoint);
 			}
 		}

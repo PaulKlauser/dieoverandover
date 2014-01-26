@@ -5,13 +5,15 @@ using System.Collections;
 public class PlayerController : Entity {
 	
 	// Player Handling
-	public float gravity = 20;
+	public float regularGravity = 20;
+	public float diveGravity = 100;
+	public float currentGravity;
 	public float walkSpeed = 8;
 	//public float runSpeed = 12;
 	public float acceleration = 30;
 	public float jumpHeight = 12;
 	public float slideDeceleration = 8;
-
+	
 	private float initiateSlideThreshold = 7;
 	
 	// System
@@ -24,17 +26,19 @@ public class PlayerController : Entity {
 	// States
 	private bool jumping;
 	private bool sliding;
+	private bool diving;
 	private bool wallHolding;
 	private bool stopSliding;
-
-
+	
+	
 	// Components
 	private PlayerPhysics playerPhysics;
 	private Animator animator;
 	private GameManager manager;
 	
-
+	
 	void Start () {
+		currentGravity = regularGravity;
 		playerPhysics = GetComponent<PlayerPhysics>();
 		animator = GetComponent<Animator>();
 		manager = Camera.main.GetComponent<GameManager>();
@@ -42,13 +46,33 @@ public class PlayerController : Entity {
 	}
 	
 	void Update () {
+		
+		//Check for end of dive
+		if (diving && playerPhysics.grounded) {
+
+			// Minimum velocity to suicide
+			if (amountToMove.y <= -25.0f)
+			{
+				Instantiate(deadBody, transform.position, transform.rotation);
+				bloodParticles.emissionRate = 200 + (int)(amountToMove.magnitude * 10);
+				bloodParticles.startSpeed = 3;
+				TakeDamage(health);
+			}
+			else
+			{
+				diving = false;
+				animator.SetBool("Diving",false);
+				currentGravity = regularGravity;
+			}
+		}
+		
 		// Reset acceleration upon collision
 		if (playerPhysics.movementStopped) {
 			targetSpeed = 0;
 			currentSpeed = 0;
 		}
 		
-
+		
 		// If player is touching the ground
 		if (playerPhysics.grounded) {
 			amountToMove.y = 0;
@@ -66,23 +90,12 @@ public class PlayerController : Entity {
 			
 			// Slide logic
 			if (sliding) {
-				if (Mathf.Abs(currentSpeed) < .25f || stopSliding || Input.GetButtonUp("Slide")) {
+				if (Mathf.Abs(currentSpeed) < .25f || stopSliding || Input.GetButtonUp("Slide/DiveBomb")) {
 					stopSliding = false;
 					sliding = false;
 					animator.SetBool("Sliding",false);
 					//playerPhysics.ResetCollider();
 					playerPhysics.standUp();
-				}
-			}
-			
-			// Slide Input
-			if (Input.GetButtonDown("Slide")) {
-				if (Mathf.Abs(currentSpeed) > initiateSlideThreshold) {
-					sliding = true;
-					animator.SetBool("Sliding",true);
-					targetSpeed = 0;
-					
-					playerPhysics.SetCollider(new Vector3(5.46f,3.7f,3), new Vector3(0.0f,0.0f,0));
 				}
 			}
 		}
@@ -95,6 +108,28 @@ public class PlayerController : Entity {
 			}
 		}
 		
+		// Slide Input
+		if (Input.GetButtonDown("Slide/DiveBomb")) {
+			if(playerPhysics.grounded)
+			{
+				//Do Slide
+				if (Mathf.Abs(currentSpeed) > initiateSlideThreshold) {
+					sliding = true;
+					animator.SetBool("Sliding", true);
+					targetSpeed = 0;
+					
+					playerPhysics.SetCollider(new Vector3(5.46f,3.7f,3), new Vector3(0.0f,0.0f,0));
+				}
+			}
+			else
+			{
+				//Do DiveBomb
+				currentGravity = diveGravity;
+				animator.SetBool("Diving", true);
+				diving = true;
+			}
+		}
+		
 		// Jump Input
 		if (Input.GetButtonDown("Jump")) {
 			if (sliding) {
@@ -103,7 +138,7 @@ public class PlayerController : Entity {
 			else if (playerPhysics.grounded || wallHolding) {
 				amountToMove.y = jumpHeight;
 				jumping = true;
-				animator.SetBool("Jumping",true);
+				animator.SetBool("Jumping", true);
 				
 				if (wallHolding) {
 					wallHolding = false;
@@ -143,11 +178,11 @@ public class PlayerController : Entity {
 			}
 		}
 		
-		amountToMove.y -= gravity * Time.deltaTime;
+		amountToMove.y -= currentGravity * Time.deltaTime;
 		playerPhysics.Move(amountToMove * Time.deltaTime, moveDirX);
-	
+		
 	}
-
+	
 	void OnTriggerEnter(Collider c) {
 		if (c.tag == "Checkpoint") {
 			manager.SetCheckpoint(c.transform.position);

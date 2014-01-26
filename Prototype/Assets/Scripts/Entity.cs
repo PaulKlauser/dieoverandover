@@ -11,10 +11,6 @@ public class Entity : MonoBehaviour {
 	//public GameObject blood;
 	public ParticleSystem bloodParticles;
 	public GameObject deadBody;
-
-	/*void Update() {
-		Blood bloodScript = this.gameObject.GetComponent<Blood> ();
-		}*/
 	
 	public void TakeDamage(float dmg) {
 		health -= dmg;
@@ -25,19 +21,15 @@ public class Entity : MonoBehaviour {
 	}
 	
 	public void Die() {
-		//Ragdoll r = (Instantiate(ragdoll,transform.position,transform.rotation) as GameObject).GetComponent<Ragdoll>();
-		//r.CopyPose(transform);
 		Destroy(this.gameObject);
 		dead = true;
-		//blood = GetComponent<ParticleSystem> ();
-		//blood.Play ();
-		//blood = new Blood ();
-		//bloodScript.Bleed ();
-		//GameObject go = (GameObject)Instantiate (Resources.Load ("blood"));
-		//GameObject b = (Instantiate (Resources.Load ("blood"), transform.position, transform.rotation) as GameObject);
-		Instantiate(bloodParticles, transform.position, transform.rotation);
-		//Instantiate(deadBody, transform.position, transform.rotation);
 
+		// Make sure this is at least gory enough to be worth their time.
+		if (bloodParticles.emissionRate < 200) {
+			bloodParticles.emissionRate = 200;
+		}
+
+		Instantiate(bloodParticles, transform.position, transform.rotation);
 	}
 
 	public bool isDead() {

@@ -17,6 +17,8 @@ public class Sawblade : Obstacle {
 	
 	void OnTriggerEnter(Collider c) {
 		if (c.tag == "Player") {
+			c.GetComponent<Entity>().bloodParticles.emissionRate = 2500;
+			c.GetComponent<Entity>().bloodParticles.startSpeed = 6;
 			c.GetComponent<Entity>().TakeDamage(10);
 		}
 	}
