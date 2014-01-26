@@ -8,8 +8,10 @@ public class GameManager : MonoBehaviour {
 	private GameCamera cam;
 	private Vector3 checkpoint;
 
-	public static int levelCount = 2;
+	public static int levelCount = 10;
 	public static int currentLevel = 1;
+
+	private bool loading;
 
 	void Start () {
 		cam = GetComponent<GameCamera>();
@@ -38,6 +40,10 @@ public class GameManager : MonoBehaviour {
 				SpawnPlayer(checkpoint);
 			}
 		}
+		if (Input.GetButtonDown("Escape")) {
+			currentLevel = 1;
+			Application.LoadLevel("Main Menu");
+		}
 	}
 
 	public void SetCheckpoint(Vector3 cp) {
@@ -45,12 +51,15 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void EndLevel() {
-		if (currentLevel < levelCount) {
+
+		if (currentLevel < levelCount && !loading) {
+			loading = true;
 			currentLevel++;
 			Application.LoadLevel("Level " + currentLevel);
+			loading = false;
 		}
 		else {
-			Debug.Log("Game Over");
+			Application.LoadLevel("Credits");
 		}
 	}
 }
