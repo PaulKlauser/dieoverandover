@@ -1,2 +1,3 @@
 2D\ Test/Temp/UnityLockfile
 gitignore Prototype/Library/metadata/*
+gitignore Prototype/Library/metadata/*/*
